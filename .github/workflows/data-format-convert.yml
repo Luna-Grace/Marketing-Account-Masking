@@ -1,0 +1,46 @@
+name: 【哔哩哔哩】验证 UID 格式并从 JSON 数据生成其他格式
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'bilibili-normal.json'
+  workflow_dispatch:
+
+jobs:
+  uid-check-and-data-format-convert:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.head_ref }}
+
+    - name: 设置 Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: 安装依赖
+      run: |
+        python -m pip install --upgrade pip
+        pip install PyYAML
+
+    - name: 检查 UID 格式
+      run: python bilibili_check_uid.py
+
+    - name: 运行转换脚本
+      run: python bilibili_convert_json.py
+
+    - name: 配置 Git 信息
+      run: |
+        git config --global user.name '宁静致远'
+        git config --global user.email '172552290+fjwxzde@users.noreply.github.com'
+
+    - name: 提交转换结果
+      run: |
+        git add "bilibili-normal-uids.txt" "bilibili-normal-usernames.txt" "bilibili-normal.md" "bilibili-normal.yaml"
+        git commit -m "[自动流🤖]【哔哩哔哩】添加转换后的数据"
+        git push origin ${{ github.head_ref }}
