@@ -41,3 +41,4 @@ jobs:
       run: |
         git add "bilibili-normal-uids.txt" "bilibili-normal-usernames.txt" "bilibili-normal.md" "bilibili-normal.yaml"
         git commit -m "[自动流🤖]【哔哩哔哩】添加转换后的数据"
+        git push
