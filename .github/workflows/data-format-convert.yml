@@ -30,7 +30,7 @@ jobs:
       run: python bilibili_check_uid.py
 
     - name: 运行转换脚本
-      run: python convert_json.py
+      run: python bilibili_convert_json.py
 
     - name: 配置 Git 信息
       run: |
